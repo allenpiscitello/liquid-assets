@@ -10,7 +10,7 @@ with open("config.json") as configfile:
 @app.route("/")
 def view_assets():
     db = sqlite3.connect(config["database"])
-    assets = db.execute("SELECT asset FROM issuances WHERE token IS NOT NULL ORDER BY datetime ASC")
+    assets = db.execute("SELECT block, datetime, asset, amount, tokenamount FROM issuances WHERE token IS NOT NULL ORDER BY datetime ASC")
     return render_template("all_assets.jinja", assets=assets)
 
 @app.route("/asset/<string:id>")
