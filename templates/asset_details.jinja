@@ -1,0 +1,17 @@
+Asset; {{asset_id}} <br/>
+Token: {{token_info[0]}}<br/>
+Token Amount Issued {{token_info[1]}}
+
+<h4>Token History</h4>
+<table>
+{% for asset_transaction in asset_transactions %}
+ <tr><td>{{asset_transaction[0]}}</td><td>{{asset_transaction[1]}}</td><td>{{'Confidential' if asset_transaction[2] == None else asset_transaction[2]}}</td></tr>
+{% endfor %}
+</table>
+
+<h4>Reissue Token History</h4>
+<table>
+{% for reissue in reissuances %}
+ <tr><td>{{reissue[0]}}</td><td>{{reissue[1]}}</td><td>{{'Confidential' if reissue[2] == None else reissue[2]}}</td></tr>
+{% endfor %}
+</table>
