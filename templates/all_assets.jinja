@@ -1,7 +1,7 @@
 <table>
-<tr><th>Block</th><th>Asset</th><th>Reissuable?</th></tr>
+<tr><th>Block</th><th>Asset</th><th>Reissuable?</th><th>Iniital Supply</th></tr>
 {% for row in assets %}
-    <tr><td>{{row[0]}}</td><td><a href='/asset/{{row[2]}}'>{{row[2]}}</a></td><td>{{"Yes" if row[3] != None else "No"}}</td></tr>
+    <tr><td>{{row[0]}}</td><td><a href='/asset/{{row[2]}}'>{{row[2]}}</a></td><td>{{"Yes" if row[4] != None else "No"}}</td><td>{{"Confidential" if row[3] == None else row[3]}}</td></tr>
 {% endfor %}
 
 </table>
