@@ -1,24 +1,63 @@
 {% extends "page.jinja" %}
 {% block content %}
 
+<div class="page-header">
+    <h3>Asset {{asset.id}}</h3>
+</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-3"><div class="pull-right"><b>Reissuable?</b></div></div>
+                <div class="col-xs-9">{{"Yes" if asset.reissuanceSupply > 0 else "No" if asset.reissuable == false else "No - Tokens Burned"}}</div>  
+            </div>
+            {% if asset.reissuanceSupply > 0 %}
+                <div class="row">
+                    <div class="col-xs-3"><div class="pull-right"><b>Reissuance Supply</b></div></div>
+                    <div class="col-xs-9">{{asset.reissuanceSupply|confidential_amount}}</div>  
+                </div>
+            {% endif %}
+             <div class="row">
+                <div class="col-xs-3"><div class="pull-right"><b>Amount In Circulation</b></div></div>
+                <div class="col-xs-9">{{asset.supply|confidential_amount}}</div>  
+            </div>
 
-    Asset; {{asset_id}} <br/>
-    Token: {{token_info[0]}}<br/>
-    Token Amount Issued {{token_info[1]}}
+             <div class="row">
+                <div class="col-xs-3"><div class="pull-right"><b>Reissuance Token</b></div></div>
+                <div class="col-xs-9">{{asset.reissuanceToken}}</div>  
+            </div>
+        </div>
+    </div>
+</div>
 
     <h4>Token History</h4>
-    <table class="table table-striped">
-    {% for asset_transaction in asset_transactions %}
-    <tr><td>{{asset_transaction[0]}}</td><td>{{asset_transaction[1]}}</td><td>{{'Confidential' if asset_transaction[2] == None else asset_transaction[2]}}</td></tr>
-    {% endfor %}
+    <table class="table table-striped table-bordered table-hover">
+        <tr><th>Block</th><th>Time</th><th>Supply Change</th></tr>
+        {% for asset_transaction in asset.assetTransactions %}
+        <tr>
+            <td>{{asset_transaction[0]}}</td>
+            <td>{{asset_transaction[1]|timestamp}}</td>
+            <td>{{asset_transaction[2]|confidential_amount}}</td>
+        </tr>
+        {% endfor %}
     </table>
+    {% if asset.reissuances|length > 0 %}
+ 
+        <h4>Reissue Token History</h4>
+        <table class="table table-striped table-bordered table-hover">
+                <td>{{asset.creationBlock}}</td>
+                <td>{{asset.creationTime|timestamp}}</td>
+                <td>{{asset.reissueAmount|confidential_amount}}</td>
+            {% for reissue in asset.reissuances %}
+            <tr>
+                <td>{{reissue[0]}}</td>
+                <td>{{reissue[1]|timestamp}}</td>
+                <td>{{reissue[2]|confidential_amount}}</td>
+            </tr>
+            {% endfor %}
+        </table>
 
-    <h4>Reissue Token History</h4>
-    <table class="table table-striped">
-    {% for reissue in reissuances %}
-    <tr><td>{{reissue[0]}}</td><td>{{reissue[1]}}</td><td>{{'Confidential' if reissue[2] == None else reissue[2]}}</td></tr>
-    {% endfor %}
-    </table>
-
-
+    {% endif %}
+ 
+    <a href="/">&lt;&lt; All Assets</a> 
 {% endblock %}
